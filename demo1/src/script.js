@@ -25,7 +25,7 @@ scene.add(camera);
 
 // 创建网格对象
 const geometry = new THREE.BoxGeometry();
-const material = new THREE.ShaderMaterial({ color: 0x03c03c });
+const material = new THREE.MeshBasicMaterial({ color: 0x03c03c });
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
