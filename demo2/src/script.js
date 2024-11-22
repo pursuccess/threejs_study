@@ -42,22 +42,33 @@ const planet = new THREE.Mesh(SphereGeometry, SphereMaterial);
 scene.add(planet);
 
 // 创建星球轨道环
-const TorusGeometry = new THREE.TorusGeometry(150, 8, 2, 120);
+const TorusGeometry = new THREE.TorusGeometry(350, 0.3, 2, 120);
 const TorusMaterial = new THREE.MeshLambertMaterial({
   color: 0x40a9ff,
-  wireframe: true
 });
 const ring = new THREE.Mesh(TorusGeometry, TorusMaterial);
 ring.rotation.x = Math.PI / 2;
-ring.rotation.y = -0.1 * (Math.PI / 2);
+// ring.rotation.y = -0.1 * (Math.PI / 2);
 scene.add(ring);
 
-
 // 创建卫星
-const IcoGeometry = new THREE.IcosahedronGeometry(16, 0);
-const IcoMaterial = new THREE.MeshToonMaterial({ color: 0xfffc00 });
+const IcoGeometry = new THREE.IcosahedronGeometry(6, 10);
+const IcoMaterial = new THREE.MeshLambertMaterial({
+  color: 0x03c03c,
+  wireframe: true,
+});
 const satellite = new THREE.Mesh(IcoGeometry, IcoMaterial);
 scene.add(satellite);
+// 创建卫星轨道环
+const TorusGeometrySatellite = new THREE.TorusGeometry(20, 2, 2, 60);
+const TorusMaterialSatellite = new THREE.MeshLambertMaterial({
+  color: 0x40a9ff,
+  wireframe: true
+});
+const ringSatellite = new THREE.Mesh(TorusGeometrySatellite, TorusMaterialSatellite);
+ringSatellite.rotation.x = Math.PI / 2;
+ringSatellite.rotation.y = -0.1 * (Math.PI / 2);
+scene.add(ringSatellite);
 
 // 创建星星
 const stars = new THREE.Group();
@@ -95,19 +106,22 @@ const tick = () => {
   // 更新渲染器
   renderer.render(scene, camera);
   // 给网格模型添加一个转动动画
-  rot += Math.random() * 0.8;
+  rot += 0.3;
   const radian = (rot * Math.PI) / 180;
   // 星球位置动画
   planet && (planet.rotation.y += .005);
   // 星球轨道环位置动画
   ring && ring.rotateOnAxis(axis, Math.PI / 400);
+
   // 卫星位置动画
-  satellite.position.x = 250 * Math.sin(radian);
-  satellite.position.y = 100 * Math.cos(radian);
-  satellite.position.z = -100 * Math.cos(radian);
-  satellite.rotation.x += 0.005;
+  satellite.position.x = 350 * Math.sin(radian);
+  satellite.position.z = -350 * Math.cos(radian);
   satellite.rotation.y += 0.005;
-  satellite.rotation.z -= 0.005;
+
+  // 卫星轨道位置动画
+  ringSatellite.position.x = 350 * Math.sin(radian);
+  ringSatellite.position.z = -350 * Math.cos(radian);
+
   // 星星动画
   stars.rotation.y += 0.0009;
   stars.rotation.z -= 0.0003;
